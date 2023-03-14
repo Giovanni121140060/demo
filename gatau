@@ -68,19 +68,9 @@ class Character:
 
         if isinstance(other, int):
 
-            # jika serangan lawan lebih besar dari pertahanan
-
             if other > self.__defense:
 
                 self.__health -= (other - self.__defense)
-
-                return self.__health
-
-
-
-            # jika serangan lawan lebih kecil dari pertahanan
-
-            return self.__health
 
 
 
@@ -95,13 +85,6 @@ class Character:
                 self.__health -= (other.get_attack() - self.__defense)
 
                 return self.__health
-
-
-
-            # jika serangan lawan lebih kecil dari pertahanan
-
-            return self.__health
-
 
 
     def __add__(self, value: int) -> int:
@@ -195,30 +178,6 @@ def main() -> None:
     # Create monster
 
     monster = Character(name='Ganon', attack=10, defense=10, health=100)
-
-
-
-    # HP monster 100 - ((20 + 30) - 10) = 60
-
-    # 100 -> hp awal monster
-
-    # 20 -> attack regular hero
-
-    # 30 -> attack skill hero
-
-    # 10 -> defense monster
-
-    print(monster - (hero + hero.get_skill('fire')))
-
-
-
-    # HP monster 60 - (20 - 10) = 50
-
-    # 60 -> hp awal monster
-
-    # 20 -> attack regular hero
-
-    # 10 -> defense monster
 
     print(monster - hero)
 
