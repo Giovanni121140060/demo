@@ -1,0 +1,253 @@
+class Character:
+
+    '''
+
+    Base class for hero and monster
+
+    '''
+
+
+
+    def __init__(self, name: str, attack: int, defense: int, health: int) -> None:
+
+        self.__name = name
+
+        self.__attack = attack
+
+        self.__defense = defense
+
+        self.__health = health
+
+
+
+    def get_name(self) -> str:
+
+        return self.__name
+
+
+
+    def get_attack(self) -> int:
+
+        return self.__attack
+
+
+
+    def get_defense(self) -> int:
+
+        return self.__defense
+
+
+
+    def get_health(self) -> int:
+
+        return self.__health
+
+
+
+    def set_health(self, health: int) -> None:
+
+        self.__health = health
+
+        if self.__health < 0:
+
+            self.__health = 0
+
+
+
+    def __sub__(self, other) -> int:
+
+        # cetak Attacking ... Done.
+
+        print(f'Attacking ... Done.')
+
+
+
+        # check apakah other adalah int (untuk skill attack)
+
+        if isinstance(other, int):
+
+            # jika serangan lawan lebih besar dari pertahanan
+
+            if other > self.__defense:
+
+                self.__health -= (other - self.__defense)
+
+                return self.__health
+
+
+
+            # jika serangan lawan lebih kecil dari pertahanan
+
+            return self.__health
+
+
+
+        # check apakah other adalah Character (untuk regular attack)
+
+        if isinstance(other, Hero):
+
+            # jika serangan lawan lebih besar dari pertahanan
+
+            if other.get_attack() > self.__defense:
+
+                self.__health -= (other.get_attack() - self.__defense)
+
+                return self.__health
+
+
+
+            # jika serangan lawan lebih kecil dari pertahanan
+
+            return self.__health
+
+
+
+    def __add__(self, value: int) -> int:
+
+        return self.__attack + value
+
+
+
+    def __str__(self) -> str:
+
+        # Health dan mana Monster sekarang tinggal 94 dan 35.
+
+        return f'Health {self.__name} sekarang tinggal {self.__health}.'
+
+
+
+
+
+class Hero(Character):
+
+    '''
+
+    Child class for hero
+
+    '''
+
+
+
+    def __init__(self, name: str, attack: int, defense: int, health: int, mana: int) -> None:
+
+        super().__init__(name, attack, defense, health)
+
+        self.__mana = mana
+
+        self.__skills = {
+
+            'fire': 30,
+
+            'water': 30,
+
+            'earth': 30,
+
+            'wind': 30,
+
+            'lightning': 30
+
+        }
+
+
+
+    def get_mana(self) -> int:
+
+        return self.__mana
+
+
+
+    def set_mana(self, mana: int) -> None:
+
+        self.__mana = mana
+
+
+
+    def get_skill(self, skill: str) -> int:
+
+        # jika mana hero lebih besar dari mana yang dibutuhkan untuk menggunakan skill
+
+        if self.__mana >= self.__skills[skill]:
+
+            self.__mana -= self.__skills[skill]
+
+            return self.__skills[skill]
+
+
+
+        # jika mana hero kurang dari mana yang dibutuhkan untuk menggunakan skill
+
+        return 0
+
+
+
+    def set_skill(self, skill: str, value: int) -> None:
+
+        self.__skills[skill] = value
+
+
+
+    def __str__(self) -> str:
+
+        # Health dan mana Monster sekarang tinggal 94 dan 35.
+
+        return f'Health dan mana {self.get_name()} sekarang tinggal {self.get_health()} dan {self.__mana}.'
+
+
+
+
+
+def main() -> None:
+
+
+
+    # Create hero
+
+    hero = Hero(name='Link', attack=20, defense=10, health=100, mana=100)
+
+
+
+    # Create monster
+
+    monster = Character(name='Ganon', attack=10, defense=10, health=100)
+
+
+
+    # HP monster 100 - ((20 + 30) - 10) = 60
+
+    # 100 -> hp awal monster
+
+    # 20 -> attack regular hero
+
+    # 30 -> attack skill hero
+
+    # 10 -> defense monster
+
+    monster - (hero + hero.get_skill('fire'))
+
+
+
+    # HP monster 60 - (20 - 10) = 50
+
+    # 60 -> hp awal monster
+
+    # 20 -> attack regular hero
+
+    # 10 -> defense monster
+
+    monster - hero
+
+
+
+    # print
+
+    print(monster)
+
+    print(hero)
+
+
+
+
+
+if __name__ == '__main__':
+
+    main()
